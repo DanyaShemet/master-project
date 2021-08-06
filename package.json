@@ -1,0 +1,37 @@
+{
+  "name": "master-estimate-project",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "@vuelidate/core": "^2.0.0-alpha.22",
+    "@vuelidate/validators": "^2.0.0-alpha.19",
+    "chart.js": "^3.5.0",
+    "core-js": "^3.6.5",
+    "firebase": "^8.8.1",
+    "materialize-css": "^1.0.0",
+    "vue": "^3.0.0",
+    "vue-chartjs": "^3.5.1",
+    "vue-router": "^4.0.0-0",
+    "vue3-chart-v2": "^0.8.2",
+    "vuelidate": "^0.7.6",
+    "vuex": "^4.0.0-0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.2"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
