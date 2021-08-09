@@ -5,7 +5,6 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-
 // Project libs and components
 import Loader from '@/components/Loader'
 import BigLoader from '@/components/BigLoader'
@@ -22,7 +21,7 @@ import 'materialize-css/dist/js/materialize.min'
 
 
 // Your web app's Firebase configuration
-var firebaseConfig = {
+let firebaseConfig = {
     apiKey: "AIzaSyDXePZt_ckI-rKaH7dsog3Rz2_B2ja0LZ8",
     authDomain: "master-estimate-project.firebaseapp.com",
     databaseURL: "https://master-estimate-project-default-rtdb.europe-west1.firebasedatabase.app",

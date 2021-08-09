@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button @click="loginHandler('log')">Войти</button>
-    <button @click="loginHandler('reg')">Регистрация</button>
+    <button @click="loginHandler('log')">Увійти</button>
+    <button @click="loginHandler('reg')">Регістрація</button>
     <LoginForm v-if="isLoginForm" @hide="hideForm" @google="$emit('google')"/>
     <RegisterForm v-if="isRegisterForm || isShowForm" @hide="hideForm" @google="$emit('google')"/>
   </div>
@@ -15,6 +15,7 @@ import RegisterForm from "@/components/intro/RegisterForm";
 export default {
   name: 'buttons',
   props: ['isShowForm'],
+  emits: ['hideFormToButtons','google'],
   data: () => ({
     isLoginForm: false,
     isRegisterForm: false,

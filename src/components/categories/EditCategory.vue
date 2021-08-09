@@ -14,7 +14,7 @@
 
         <button class="icon-item selected active" ref="buttons" type="button" :id="$props.category.icon"
                 @click="chooseIcon"><i class="material-icons">{{ $props.category.icon }}</i></button>
-        <button class="icon-item" ref="buttons" type="button" @click="chooseIcon" v-for="icon in icons" :id="icon">
+        <button class="icon-item" :ref="buttons" type="button" @click="chooseIcon" v-for="icon in icons" :id="icon">
           <i class="material-icons">{{ icon }}</i>
           <span v-if="$props.category.icon === icon">В</span>
         </button>
@@ -48,7 +48,8 @@ export default {
     isError: null,
     isCopy: null,
     title: '',
-    loading: false
+    loading: false,
+    refsButtons: []
   }),
   validations() {
     return {
@@ -56,11 +57,7 @@ export default {
     }
   },
   methods: {
-    chooseIcon(e) {
-      e.path[1].children.forEach(el => el.classList.remove('selected'))
-      e.target.classList.add('selected')
-      this.chosenIcon = e.target.id
-    },
+
     async updateCategory() {
       if (this.v$.$invalid) {
         this.v$.$touch()
@@ -92,8 +89,19 @@ export default {
     getTitle() {
       this.title = this.category.title
     },
+    chooseIcon(e) {
+      // e.path[1].children.forEach(el => el.classList.remove('selected'))
+      this.refsButtons.forEach(el => el.classList.remove('selected'))
+      e.target.classList.add('selected')
+      this.chosenIcon = e.target.id
+    },
+    buttons(el){
+      this.refsButtons.push(el)
+    }
   },
-
+  beforeUpdate() {
+    this.refsButtons = [] // reset empty before each update
+  },
   mounted() {
     this.loading = true
     this.getTitle()

@@ -1,23 +1,23 @@
 <template>
   <div class="categories container" ref="categories">
     <BigLoader v-if="loading"/>
-    <div v-else >
-
-      <h4 >Ваши категории</h4>
-
+    <div v-else>
+      <h4>Ваши категории</h4>
       <div class="categories-wrap" :class="categories.length % 3 === 0 ? 'sb' : ''">
         <div class="category-item" v-for="category in categories" :key="category.id">
           <div class="category-item-user">
             <i class="material-icons ">{{ category.icon }}</i>
           </div>
           <p>{{ category.title }}</p>
-
-          <button @click="showEditableForm" class="change" :data-id=category.id ><i class="material-icons">create</i></button>
-          <button @click="deleteCategory" class="delete" :data-id=category.id><i class="material-icons">clear</i></button>
-          <div class="done loader" :id="category.id"> <Loader /></div>
+          <button @click="showEditableForm" class="change" :data-id=category.id><i class="material-icons">create</i>
+          </button>
+          <button @click="deleteCategory" class="delete" :data-id=category.id><i class="material-icons">clear</i>
+          </button>
+          <div class="done loader" :id="category.id">
+            <Loader/>
+          </div>
         </div>
       </div>
-
       <div class="action-buttons action-buttons-category">
         <button @click="showCreatableForm" class="action-emotion" v-if="!isEditable"
                 :class="isCreatable ? 'minus minus-category' : 'plus-category plus'">{{ isCreatable ? '-' : '+' }}
@@ -25,8 +25,12 @@
         <button @click="hideEditableForm" class="action-emotion minus minus-category" v-if="isEditable">-</button>
       </div>
       <CreateCategory @created="addNewCategory" :icons="categoryIcons" v-if="isCreatable" :categories="categories"/>
-      <EditCategory v-if="isEditable && editableCategory" :category="editableCategory" :icons="categoryIcons" @updated="updateCategories"
-                    :categories="categories" :key="isRerender"/>
+      <EditCategory v-if="isEditable && editableCategory"
+                    :category="editableCategory"
+                    :icons="categoryIcons"
+                    :categories="categories"
+                    @updated="updateCategories"
+                    :key="isRerender"/>
     </div>
 
   </div>
@@ -79,7 +83,7 @@ export default {
     loading: false,
   }),
   async mounted() {
-    this.loading= true
+    this.loading = true
     this.categories = await this.$store.dispatch('fetchCategories')
     this.loading = false
     let userIcons = []
@@ -110,8 +114,8 @@ export default {
     },
     async deleteCategory(e) {
       let catId = e.target.dataset.id
-      document.querySelector('#'+catId).classList.add('active')
-      document.querySelector('#'+catId).classList.remove('done')
+      document.querySelector('#' + catId).classList.add('active')
+      document.querySelector('#' + catId).classList.remove('done')
       const idx = this.categories.findIndex(c => c.id === catId)
       this.categoryIcons.push(this.categories[idx].icon)
       await this.$store.dispatch('deleteCategory', catId)
@@ -123,10 +127,10 @@ export default {
       } else {
         this.categories = []
       }
-      if (this.editableCategory.id === catId){
+      if (this.editableCategory.id === catId) {
         this.isEditable = false
       }
-      document.querySelector('#'+catId).classList.remove('active')
+      document.querySelector('#' + catId).classList.remove('active')
       this.$message('Категория была удалена')
     },
     async showEditableForm(e) {
@@ -164,29 +168,32 @@ export default {
 }
 </script>
 
-<style scoped lang="scss" >
-h4{
+<style scoped lang="scss">
+h4 {
   color: #C0C0C0;
   text-align: left;
   font-weight: 500;
   font-size: 30px;
 }
-.categories-wrap{
+
+.categories-wrap {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   margin-bottom: 20px;
 
-  &.sb{
+  &.sb {
     justify-content: space-between;
   }
-  .category-item{
+
+  .category-item {
     padding: 5px 0;
     border-radius: 5px;
     display: flex;
     align-items: center;
     width: 33%;
-    .category-item-user{
+
+    .category-item-user {
       width: 41px;
       height: 41px;
       border-radius: 5px;
@@ -196,7 +203,8 @@ h4{
       align-items: center;
       margin-right: 10px;
     }
-    p{
+
+    p {
       font-size: 14px;
       font-weight: 300;
       margin-right: 15px;
@@ -204,32 +212,40 @@ h4{
       width: 60px;
       overflow: hidden;
     }
-    .change , .delete{
-      cursor: pointer;s
-      i{
+
+    .change, .delete {
+      cursor: pointer;
+
+      s
+      i {
         font-size: 20px !important;
       }
-      &:focus{
+
+      &:focus {
         background-color: #fff;
       }
 
     }
 
-    .delete{
+    .delete {
       color: #C0C0C0;
     }
   }
 }
-.loader{
+
+.loader {
   position: absolute;
   margin-top: 0;
 }
-div.active{
+
+div.active {
   visibility: visible;
 }
-div.done{
+
+div.done {
   visibility: hidden;
 }
+
 .action-buttons-category button {
   margin-right: 0 !important;
   width: 38px;
@@ -248,21 +264,22 @@ div.done{
   }
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 768px) {
 
-  .categories{
+  .categories {
     margin-top: 70px;
     margin-bottom: 50px;
   }
-  h4{
+  h4 {
     text-align: center;
   }
-  .categories-wrap{
+  .categories-wrap {
 
-    .category-item{
+    .category-item {
       justify-content: center;
       width: 50%;
-      p{
+
+      p {
         width: 150px;
       }
     }
@@ -270,11 +287,12 @@ div.done{
 
 }
 
-@media screen and (max-width: 550px){
-  .categories-wrap{
+@media screen and (max-width: 550px) {
+  .categories-wrap {
     height: 200px;
     overflow-y: scroll;
-    .category-item{
+
+    .category-item {
       width: 100%;
     }
   }

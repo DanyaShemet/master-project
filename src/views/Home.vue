@@ -36,6 +36,7 @@ export default {
   },
   methods: {
     async googleHandler() {
+      console.log('s')
       let provider = new firebase.auth.GoogleAuthProvider();
       let isAuthentication = false;
       try {

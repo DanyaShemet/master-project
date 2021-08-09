@@ -247,7 +247,6 @@ export default {
     },
     goBack(){
       if (this.info.sort === 'day'){
-
         let yesterday = this.dtime_nums(-this.countedDate)
         this.countedDate += 1
         const neededDate = this.records.filter(record => {
@@ -268,6 +267,8 @@ export default {
         return new Date().toLocaleDateString() === new Date(record.date).toLocaleDateString()
       })
       this.tempRecordsForCharts = neededDate
+
+      // Исправить
       this.isRerenderIn = Date.now()+1
       this.isRerenderOut = Date.now()
       neededDate.map(record => {

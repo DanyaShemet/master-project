@@ -58,6 +58,7 @@ export default {
     return {v$: useVuelidate()}
   },
   name: 'login',
+  emits: ['hide', 'google'],
   data: () => ({
     email: '',
     password: '',
