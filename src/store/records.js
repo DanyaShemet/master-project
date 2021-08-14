@@ -23,11 +23,10 @@ export default {
             Object.keys(records).map(key => ({...records[key]})).forEach(el => {
                 if (el.type === 'income'){
                     emotions.incomeCount += el.countEmotions
-                    emotions.emotions = emotions.incomeCount - emotions.outcomeCount
                 }else{
                     emotions.outcomeCount += el.countEmotions
-                    emotions.emotions = emotions.incomeCount - emotions.outcomeCount
                 }
+                emotions.emotions = emotions.incomeCount - emotions.outcomeCount
             })
             await dispatch ('updateInfo', emotions)
         },

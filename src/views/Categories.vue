@@ -4,19 +4,12 @@
     <div v-else>
       <h4>Ваши категории</h4>
       <div class="categories-wrap" :class="categories.length % 3 === 0 ? 'sb' : ''">
-        <div class="category-item" v-for="category in categories" :key="category.id">
-          <div class="category-item-user">
-            <i class="material-icons ">{{ category.icon }}</i>
-          </div>
-          <p>{{ category.title }}</p>
-          <button @click="showEditableForm" class="change" :data-id=category.id><i class="material-icons">create</i>
-          </button>
-          <button @click="deleteCategory" class="delete" :data-id=category.id><i class="material-icons">clear</i>
-          </button>
-          <div class="done loader" :id="category.id">
-            <Loader/>
-          </div>
-        </div>
+          <CategoryItem
+              :categoryInfo="category"
+              @showEditableForm="showEditableForm"
+              @deleteCategory="deleteCategory"
+              v-for="category in categories"
+              :key="category.id"/>
       </div>
       <div class="action-buttons action-buttons-category">
         <button @click="showCreatableForm" class="action-emotion" v-if="!isEditable"
@@ -24,7 +17,11 @@
         </button>
         <button @click="hideEditableForm" class="action-emotion minus minus-category" v-if="isEditable">-</button>
       </div>
-      <CreateCategory @created="addNewCategory" :icons="categoryIcons" v-if="isCreatable" :categories="categories"/>
+      <CreateCategory v-if="isCreatable"
+                      @created="addNewCategory"
+                      :icons="categoryIcons"
+                      :categories="categories"/>
+
       <EditCategory v-if="isEditable && editableCategory"
                     :category="editableCategory"
                     :icons="categoryIcons"
@@ -39,6 +36,7 @@
 <script>
 import CreateCategory from '@/components/categories/CreateCategory'
 import EditCategory from '@/components/categories/EditCategory'
+import CategoryItem from "@/components/categories/CategoryItem";
 
 export default {
   data: () => ({
@@ -163,12 +161,13 @@ export default {
   },
   name: 'categories',
   components: {
+    CategoryItem,
     CreateCategory, EditCategory
   }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 h4 {
   color: #C0C0C0;
   text-align: left;

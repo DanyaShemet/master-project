@@ -20,7 +20,6 @@ export default {
                     dispatch('deleteRecords', el.recordId)
                 }
             })
-
         },
 
         async updateCategory({commit, dispatch}, {id,title,icon}){

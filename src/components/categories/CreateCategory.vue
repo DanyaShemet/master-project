@@ -6,9 +6,9 @@
              v-model="v$.title.$model"
              :class="{invalid: v$.title.$errors[0] }">
       <h5>Выберите подходящую иконку</h5>
-      <div class="category-buttons" >
+      <div class="category-buttons">
 
-        <button class="icon-item" :ref="buttons"  type="button" @click="chooseIcon" v-for="icon in icons" :id="icon">
+        <button class="icon-item" :ref="buttons" type="button" @click="chooseIcon" v-for="icon in icons" :id="icon">
           <i class="material-icons">{{ icon }}</i>
         </button>
 
@@ -18,10 +18,12 @@
       <button class="plus-category action-emotion" :disabled="loading">+</button>
     </form>
     <p v-if="isCopy" class="error">Категория с таким именем уже есть, не стоит ее дублировать</p>
-    <div  v-for="(error, index) of v$.title.$errors" :key="index">
+    <div v-for="(error, index) of v$.title.$errors" :key="index">
       <p class="error" v-if="error.$message === 'Value is required'">Введите название категории</p>
-      <p class="error" v-if="error.$message === 'This field should be at least 2 long'">Название категории слишком короткое, минимум 2 символа</p>
-      <p class="error" v-if="error.$message === 'The maximum length allowed is 10'">Название категории слишком длинное, максимум 10 символов</p>
+      <p class="error" v-if="error.$message === 'This field should be at least 2 long'">Название категории слишком
+        короткое, минимум 2 символа</p>
+      <p class="error" v-if="error.$message === 'The maximum length allowed is 15'">Название категории слишком длинное,
+        максимум 15 символов</p>
     </div>
     <p v-if="isError.icon" class="error">Выберите иконку</p>
     <Loader v-if="loading" class=" mt-10"/>
@@ -49,7 +51,7 @@ export default {
   }),
   validations() {
     return {
-      title: {required, minLength: minLength(2), maxLength: maxLength(10)},
+      title: {required, minLength: minLength(2), maxLength: maxLength(15)},
     }
   },
   methods: {
@@ -79,25 +81,23 @@ export default {
             title: this.title,
             icon: this.icon
           }
-          await this.$store.dispatch('createCategory',category);
+          await this.$store.dispatch('createCategory', category);
           this.title = ''
           this.v$.$reset()
           this.$message('Категория была создана')
           this.loading = false
-          this.isCopy = null
           this.$emit('created', category)
         }
       } catch (e) {
       }
     },
     chooseIcon(e) {
-      //e.path[1].children.forEach(el => el.classList.remove('selected'))
       this.refsButtons.forEach(el => el.classList.remove('selected'))
       e.target.classList.add('selected')
       this.icon = e.target.id
     },
 
-    buttons(el){
+    buttons(el) {
       this.refsButtons.push(el)
     }
   },
@@ -105,7 +105,6 @@ export default {
     this.refsButtons = [] // reset empty before each update
   },
   mounted() {
-
     window.scrollBy({
       top: this.$refs.create.getBoundingClientRect().top,
       behavior: 'smooth'
@@ -116,49 +115,56 @@ export default {
 
 <style scoped lang="scss">
 
-h4{
+h4 {
   color: #C0C0C0;
   font-size: 20px;
   text-align: left;
   font-weight: 500;
   margin-bottom: 0px;
 }
-h5{
+
+h5 {
   font-weight: 400;
   font-size: 15px;
   color: #C0C0C0;
 }
-input{
+
+input {
   border-bottom: 2px solid #000 !important;
   font-weight: 500;
   font-size: 18px;
-  &::placeholder{
+
+  &::placeholder {
     font-weight: 400;
   }
-  &:focus{
+
+  &:focus {
     box-shadow: none !important;
   }
 }
+
 .plus-category {
   display: block;
   margin: 0 auto;
 }
+
 .plus-category {
   border: 1px solid #000 !important;
   width: 38px;
   height: 38px;
   font-size: 18px;
 
-&:focus {
-   background-color: #fff;
- }
+  &:focus {
+    background-color: #fff;
+  }
 }
 
-form{
+form {
   margin-bottom: 20px;
 }
-@media screen and (max-width: 768px){
-  .create-category{
+
+@media screen and (max-width: 768px) {
+  .create-category {
     padding-bottom: 100px;
   }
 }

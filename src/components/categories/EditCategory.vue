@@ -28,7 +28,7 @@
     <div  v-for="(error, index) of v$.title.$errors" :key="index">
       <p class="error" v-if="error.$message === 'Value is required'">Введите название категории</p>
       <p class="error" v-if="error.$message === 'This field should be at least 2 long'">Название категории слишком короткое, минимум 2 символа</p>
-      <p class="error" v-if="error.$message === 'The maximum length allowed is 10'">Название категории слишком длинное, максимум 10 символов</p>
+      <p class="error" v-if="error.$message === 'The maximum length allowed is 15'">Название категории слишком длинное, максимум 15 символов</p>
     </div>
 
   </div>
@@ -37,6 +37,7 @@
 <script>
 import {required, minLength, maxLength} from '@vuelidate/validators'
 import useVuelidate from "@vuelidate/core";
+
 
 export default {
   setup() {
@@ -53,11 +54,10 @@ export default {
   }),
   validations() {
     return {
-      title: {required, minLength: minLength(2), maxLength: maxLength(10)},
+      title: {required, minLength: minLength(2), maxLength: maxLength(15)},
     }
   },
   methods: {
-
     async updateCategory() {
       if (this.v$.$invalid) {
         this.v$.$touch()
