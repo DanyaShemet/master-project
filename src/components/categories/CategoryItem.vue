@@ -8,7 +8,7 @@
     </button>
     <button @click="deleteCategory" class="delete" :data-id=categoryInfo.id><i class="material-icons">clear</i>
     </button>
-    <div class="done loader" :id="categoryInfo.id">
+      <div class="loader" :class="{active:localLoader, done: !localLoader}">
       <Loader/>
     </div>
   </div>
@@ -20,7 +20,8 @@ export default {
     categoryInfo: {
       type: Object,
       required: true
-    }
+    },
+    localLoader: Boolean
   },
   emits: ['showEditableForm', 'deleteCategory'],
   methods: {

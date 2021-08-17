@@ -9,6 +9,7 @@
               @showEditableForm="showEditableForm"
               @deleteCategory="deleteCategory"
               v-for="category in categories"
+              :localLoader="localLoader"
               :key="category.id"/>
       </div>
       <div class="action-buttons action-buttons-category">
@@ -79,6 +80,7 @@ export default {
     isCreatable: false,
     isRerender: 0,
     loading: false,
+    localLoader: false
   }),
   async mounted() {
     this.loading = true
@@ -112,8 +114,7 @@ export default {
     },
     async deleteCategory(e) {
       let catId = e.target.dataset.id
-      document.querySelector('#' + catId).classList.add('active')
-      document.querySelector('#' + catId).classList.remove('done')
+      this.localLoader = true
       const idx = this.categories.findIndex(c => c.id === catId)
       this.categoryIcons.push(this.categories[idx].icon)
       await this.$store.dispatch('deleteCategory', catId)
@@ -128,7 +129,7 @@ export default {
       if (this.editableCategory.id === catId) {
         this.isEditable = false
       }
-      document.querySelector('#' + catId).classList.remove('active')
+      this.localLoader = false
       this.$message('Категория была удалена')
     },
     async showEditableForm(e) {

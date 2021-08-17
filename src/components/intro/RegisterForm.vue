@@ -1,7 +1,7 @@
 <template>
   <div class="form-home" @click="hideForm">
 
-    <form class="" @submit.prevent="submitHandler" @click="(e) => {e.stopPropagation()}">
+    <form class="" @submit.prevent="submitHandler" @click.stop>
       <h5>Регистрация</h5>
       <div class="row">
         <div class="input-field  s12">
