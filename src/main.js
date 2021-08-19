@@ -9,6 +9,7 @@ import store from './store'
 import Loader from '@/components/Loader'
 import BigLoader from '@/components/BigLoader'
 import messagePlugin from "./utils/message.plugin";
+import Pagination from 'v-pagination-3';
 
 // Firebase
 import firebase from "firebase/app";
@@ -42,6 +43,7 @@ firebase.auth().onAuthStateChanged(()=>{
         app = createApp(App)
         app.component('Loader', Loader)
         app.component('BigLoader', BigLoader)
+        app.component('pagination', Pagination);
         app.use(messagePlugin)
         app.use(router)
         app.use(store)

@@ -3,6 +3,7 @@ import auth from "./auth";
 import categories from "./categories";
 import info from "./info";
 import records from "./records";
+
 const store = createStore({
     state: {
         error: null
@@ -23,4 +24,5 @@ const store = createStore({
         error: s => s.error
     }
 })
+
 export default store

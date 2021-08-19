@@ -100,7 +100,7 @@
       </div>
     </div>
 
-    <div class="history-chart" v-if="records.length && categories.length" :class="{hide: !showCharts}">
+    <div class="history-chart" v-if="records.length && categories.length && showCharts" >
       <OutcomeChart :categories="categories" :records="tempRecordsForCharts" :key="isRerenderOut"/>
       <IncomeChart :categories="categories" :records="tempRecordsForCharts" :key="isRerenderIn"/>
     </div>
@@ -316,8 +316,8 @@ export default {
     this.info.sort === 'day' ? await this.showBalancePerDay() : await this.showAllBalance()
     this.categories = await this.$store.dispatch('fetchCategories')
     this.loading = false
-    Chart.defaults.global.defaultFontColor = '#000000';
-    Chart.defaults.global.defaultFontFamily = "'Montserrat', sans-serif";
+    // Chart.defaults.global.defaultFontColor = '#000000';
+    // Chart.defaults.global.defaultFontFamily = "'Montserrat', sans-serif";
   },
 }
 </script>

@@ -4,11 +4,11 @@
       <i class="material-icons ">{{ categoryInfo.icon }}</i>
     </div>
     <p>{{ categoryInfo.title }}</p>
-    <button @click="showEditableForm" class="change" :data-id=categoryInfo.id><i class="material-icons">create</i>
+    <button @click="this.$emit('showEditableForm', categoryInfo.id)" class="change" ><i class="material-icons">create</i>
     </button>
-    <button @click="deleteCategory" class="delete" :data-id=categoryInfo.id><i class="material-icons">clear</i>
+    <button @click=" this.$emit('deleteCategory', categoryInfo.id)" class="delete" ><i class="material-icons">clear</i>
     </button>
-      <div class="loader" :class="{active:localLoader, done: !localLoader}">
+    <div class="loader" :class="classObject">
       <Loader/>
     </div>
   </div>
@@ -21,16 +21,21 @@ export default {
       type: Object,
       required: true
     },
+    deletedId: String | Number,
     localLoader: Boolean
   },
   emits: ['showEditableForm', 'deleteCategory'],
   methods: {
-    showEditableForm(e) {
-      this.$emit('showEditableForm', e)
-    },
-    deleteCategory(e) {
-      this.$emit('deleteCategory', e)
+
+  },
+  computed: {
+    classObject: function () {
+      return {
+        active: this.localLoader && this.deletedId === this.categoryInfo.id,
+        done: !this.localLoader
+
+      }
     }
-  }
+  },
 }
 </script>

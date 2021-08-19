@@ -10,6 +10,7 @@
               @deleteCategory="deleteCategory"
               v-for="category in categories"
               :localLoader="localLoader"
+              :deleted-id="deletedId"
               :key="category.id"/>
       </div>
       <div class="action-buttons action-buttons-category">
@@ -65,7 +66,6 @@ export default {
       'brightness_5',
       'videogame_asset',
       'color_lens',
-      'videogame_asset',
       'sports_bar',
       'euro_symbol',
       'pool',
@@ -80,7 +80,8 @@ export default {
     isCreatable: false,
     isRerender: 0,
     loading: false,
-    localLoader: false
+    localLoader: false,
+    deletedId: 0,
   }),
   async mounted() {
     this.loading = true
@@ -113,8 +114,9 @@ export default {
       this.isEditable = false
     },
     async deleteCategory(e) {
-      let catId = e.target.dataset.id
+      let catId = e
       this.localLoader = true
+      this.deletedId = catId
       const idx = this.categories.findIndex(c => c.id === catId)
       this.categoryIcons.push(this.categories[idx].icon)
       await this.$store.dispatch('deleteCategory', catId)
@@ -135,7 +137,7 @@ export default {
     async showEditableForm(e) {
       this.isRerender += 1
       this.isCreatable = false
-      let catId = e.target.dataset.id
+      let catId = e
       this.isEditable = true
       let category = await this.$store.dispatch('fetchCategoryById', catId)
       this.editableCategory = {
@@ -236,6 +238,7 @@ h4 {
 .loader {
   position: absolute;
   margin-top: 0;
+  visibility: hidden;
 }
 
 div.active {
