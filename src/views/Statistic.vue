@@ -84,10 +84,6 @@ export default {
         this.records = []
       }
     },
-    showInfo(e) {
-      e.target.classList.toggle('active')
-      e.target.parentNode.classList.toggle('active')
-    },
     sortToName() {
       this.sortActive = 'title'
       this.records = this.records.sort(function (a, b) {

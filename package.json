@@ -10,6 +10,7 @@
     "@vuelidate/core": "^2.0.0-alpha.22",
     "@vuelidate/validators": "^2.0.0-alpha.19",
     "chart.js": "^3.5.0",
+    "chokidar": "^3.5.2",
     "core-js": "^3.6.5",
     "firebase": "^8.8.1",
     "jw-vue-pagination": "^1.0.3",
