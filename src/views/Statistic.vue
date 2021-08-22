@@ -5,19 +5,26 @@
     <div v-else-if="records.length">
       <div class="sort-block">
         <p>Сортування за</p>
-        <SortButton @click="sortToName" :class="{active: sortActive === 'title'}">За ім'ям</SortButton>
-        <SortButton @click="sortToDate" :class="{active: sortActive === 'date'}">За датою</SortButton>
-        <SortButton @click="sortToCount" :class="{active: sortActive === 'count'}">За кількістю</SortButton>
+        <SortButton @click="sortToName" :class="{active: sortActive === 'title'}">І</SortButton>
+        <SortButton @click="sortToDate" :class="{active: sortActive === 'date'}">Д</SortButton>
+        <SortButton @click="sortToCount" :class="{active: sortActive === 'count'}">К</SortButton>
       </div>
       <div class="records-stat">
-        <RecordStatItem v-for="(record, idx) in records" :key="record.id"
+
+        <RecordStatItem v-for="(record, idx) in recordsSubarray" :key="record.id"
                         :record="record"
                         :idx="idx"
                         @deleteRecord="deleteRecord"
                         :deletedId="deletedId"
-                        :deleteLoading="deleteLoading"/>
+                        :deleteLoading="deleteLoading"
+
+        />
       </div>
-      <pagination v-model="page" :records="records.length" :per-page="3"/>
+      <pagination
+          v-model="page"
+          :records="records.length"
+          :per-page="pageSize"
+          @paginate="pageChangeHandler($event)"/>
     </div>
     <div v-else class="center">У вас нет ни одной записи
       <router-link to="/main">Добавить запись</router-link>
@@ -27,12 +34,15 @@
 
 <script>
 import {mapGetters} from "vuex";
+import paginationMixin from '@/mixins/paginate.mixin'
 import RecordStatItem from "@/components/statistic/RecordStatItem";
 import SortButton from "@/components/statistic/SortButton";
+
 
 export default {
   name: 'statistic',
   components: {RecordStatItem, SortButton},
+  mixins: [paginationMixin],
   data: () => ({
     records: [],
     categories: [],
@@ -40,7 +50,6 @@ export default {
     deleteLoading: false,
     deletedId: 0,
     sortActive: 'date',
-    page: 2
   }),
   async mounted() {
     this.sortActive = 'date'
@@ -48,15 +57,13 @@ export default {
     this.records = await this.$store.dispatch('fetchRecords')
     this.categories = await this.$store.dispatch('fetchCategories')
     this.loading = false
-    const records = this.records.map(record => {
+    this.records = this.records.map(record => {
       return {
         ...record,
         categoryTitle: this.categories.find(c => c.id === record.categoryId).title,
         icon: this.categories.find(c => c.id === record.categoryId).icon
       }
-    })
-
-    this.records = records.sort(function (a, b) {
+    }).sort(function (a, b) {
       if (a.date > b.date) {
         return -1
       }
@@ -66,6 +73,7 @@ export default {
       return 0
     })
 
+    this.setupPagination(this.records)
   },
   methods: {
     async deleteRecord(e) {
@@ -95,6 +103,7 @@ export default {
         }
         return 0
       })
+      this.setupPagination(this.records)
     },
     sortToDate() {
       this.sortActive = 'date'
@@ -107,6 +116,7 @@ export default {
         }
         return 0
       })
+      this.setupPagination(this.records)
     },
     sortToCount() {
       this.sortActive = 'count'
@@ -119,7 +129,10 @@ export default {
         }
         return 0
       })
+      this.setupPagination(this.records)
     },
+
+
 
   },
   computed: {
