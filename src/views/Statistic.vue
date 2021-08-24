@@ -24,8 +24,11 @@
           v-model="page"
           :records="records.length"
           :per-page="pageSize"
-          @paginate="pageChangeHandler($event)"/>
+          @paginate="pageChangeHandler($event)"
+        />
     </div>
+
+
     <div v-else class="center">У вас нет ни одной записи
       <router-link to="/main">Добавить запись</router-link>
     </div>
@@ -137,6 +140,7 @@ export default {
   },
   computed: {
     ...mapGetters(['info']),
+
   },
 }
 

@@ -86,7 +86,48 @@ input{
 .icon-item.active{
     background-color: gray;
 }
+.page-link.active{
 
+}
+nav{
+    background-color: transparent;
+    height: 50px;
+    line-height: 56px;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+nav ul li, nav ul{
+    display: flex;
+    align-items: center;
+}
+.pagination li button:focus{
+    background-color: transparent;
+}
+.pagination li{
+    height: auto;
+    button{
+        transition: all .3s;
+        height: 35px;
+        width: 35px;
+        &:hover{
+            border-radius: 5px;
+            background-color: #000;
+
+            color: #fff;
+        }
+    }
+}
+.pagination li.active{
+    background-color: transparent;
+
+    button{
+        border-radius: 5px;
+        background-color: #000;
+        color: #fff;
+    }
+}
 @media screen and (max-width: 768px){
     .container{
         width: 80%;

@@ -1,5 +1,5 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
-import Home from '../views/Home.vue'
+import LoginAndRegister from '../views/LoginAndRegister.vue'
 import Main from '../views/Main.vue'
 import Categories from '../views/Categories.vue'
 import Statistic from '../views/Statistic.vue'
@@ -8,9 +8,9 @@ import * as firebase from "firebase";
 const routes = [
     {
         path: '/',
-        name: 'Home',
+        name: 'LoginAndRegister',
         meta: {layout: "home"},
-        component: Home
+        component: LoginAndRegister
     },
     {
         path: '/main',

@@ -132,7 +132,7 @@ export default {
         this.isEditable = false
       }
       this.localLoader = false
-      this.$message('Категория была удалена')
+      this.$message('Категорія була видалена')
     },
     async showEditableForm(e) {
       this.isRerender += 1
