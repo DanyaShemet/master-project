@@ -10,7 +10,6 @@
           >
           <label for="email">Email</label>
           <small class="helper-text invalid" v-for="(error, index) of v$.email.$errors" :key="index">
-
             <span v-if="error.$message === 'Value is required'">Введите email</span>
             <span v-else-if="error.$message === 'Value is not a valid email address'">Некоректный
             email</span>
@@ -20,8 +19,7 @@
       <div class="row">
         <div class="input-field  s12">
           <input id="password" type="password" v-model="v$.password.$model"
-                 :class="{invalid: v$.password.$errors[0]}"
-          >
+                 :class="{invalid: v$.password.$errors[0]}">
           <label for="password">Пароль</label>
           <small class="helper-text invalid" v-for="(error, index) of v$.password.$errors" :key="index">
             <span v-if="error.$message === 'Value is required'">Введите

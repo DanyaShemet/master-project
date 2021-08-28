@@ -11,8 +11,7 @@
 <script>
 export default {
   props: ['sort'],
-  data: () => ({
-  }),
+  data: () => ({}),
 }
 </script>
 
