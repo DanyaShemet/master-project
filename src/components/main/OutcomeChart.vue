@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-outcome" ref="charts">
+  <div class="chart-outcome" >
     <h5>Потерянные эмоции</h5>
     <canvas ref="canvas"></canvas>
   </div>
@@ -12,13 +12,21 @@ import {Pie} from 'vue3-chart-v2'
 
 export default {
   extends: Pie,
-  props: ['records', 'categories'],
+  props: {
+    categories: {
+      type: Array,
+      required: true,
+    },
+    records: {
+      type: Array,
+      required: true,
+    }
+  },
   methods: {
     randomInteger(min, max) {
       return Math.round(min - 0.5 + Math.random() * (max - min + 1));
     },
   },
-
   mounted() {
       let borderColor = []
       let backgroundColor = []
@@ -47,9 +55,6 @@ export default {
           hover: false
         }]
       })
-
-
-
 
   }
 }

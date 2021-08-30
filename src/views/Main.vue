@@ -53,56 +53,20 @@
 
 
         <div v-if="type === 'outcome'" class="outcome-form form-emotions" @click="hideForm">
-          <div class="form" @click="(e) => {e.stopPropagation()}">
-            <h4>Удаление эмоции</h4>
-            <form @submit.prevent="outcomeSubmit">
-              <label>Введите кол-во эмоций</label>
-              <input type="number" v-model="number" placeholder="">
-              <p>Выберите категорию</p>
-              <div class="record-icons">
-                <button type="button" class="record-icon" v-for="icon in categories" @click="chooseIcon" ref="buttons"
-                        :id="icon.id">
-                  <i class="material-icons">{{ icon.icon }}</i>
-                  <span class="icon-text">{{ icon.title }}</span>
-                </button>
-              </div>
-              <button class="plus-record action-button">+</button>
-            </form>
-            <p v-if="isError" class="error">Напишите количество эмоций и выбери иконку</p>
-            <Loader v-if="addDeleteLoading"/>
-            <button @click="hideForm" class="close action-button">-</button>
-          </div>
-
+          <ActionForm @submit="outcomeSubmit" :categories="categories" :addDeleteLoading="addDeleteLoading"
+                      @hideForm="hideForm" :text="'Удаление эмоции'"
+          />
         </div>
         <div v-if="type === 'income'" class="income-form form-emotions" @click="hideForm">
-          <div class="form" @click="(e) => {e.stopPropagation()}">
-            <h4>Добавление эмоции</h4>
-            <form @submit.prevent="incomeSubmit">
-              <label>Введите кол-во эмоций</label>
-              <input type="number" v-model="number">
-              <p>Выберите категорию</p>
-              <div class="record-icons">
-                <button type="button" class="record-icon" v-for="icon in categories" @click="chooseIcon"
-                        :id="icon.id">
-                  <i class="material-icons">{{ icon.icon }}</i>
-                  <span class="icon-text">{{ icon.title }}</span>
-                </button>
-              </div>
-              <button class="plus-record action-button">+</button>
-            </form>
-            <p v-if="isError" class="error">Напишите количество эмоций и выбери иконку</p>
-            <Loader v-if="addDeleteLoading"/>
-            <button @click="hideForm" class="close action-button">-</button>
-          </div>
-
-
+          <ActionForm @submit="incomeSubmit" :categories="categories" :addDeleteLoading="addDeleteLoading"
+                      @hideForm="hideForm" :text="'Добавление эмоции'"
+          />
         </div>
       </div>
     </div>
-
-    <div class="history-chart" v-if="records.length && categories.length && showCharts" >
-      <OutcomeChart :categories="categories" :records="tempRecordsForCharts" :key="isRerenderOut"/>
-      <IncomeChart :categories="categories" :records="tempRecordsForCharts" :key="isRerenderIn"/>
+    <div class="history-chart" v-if="records.length && categories.length && showCharts">
+      <ChartBlock :text="'Потерянные эмоции'" :categories="categories" :records="tempRecordsForCharts" :type="'outcome'" :key="tempRecordsForCharts.length"/>
+      <ChartBlock :text="'Полученные эмоции'" :categories="categories" :records="tempRecordsForCharts" :type="'income'" :key="tempRecordsForCharts.length"/>
     </div>
   </div>
 
@@ -114,6 +78,8 @@ import {mapGetters} from 'vuex'
 import SortMenu from '@/components/main/SortMenu'
 import IncomeChart from '@/components/main/IncomeChart'
 import OutcomeChart from '@/components/main/OutcomeChart'
+import ActionForm from "@/components/main/ActionForm";
+import ChartBlock from "@/components/main/ChartBlock";
 
 
 export default {
@@ -122,32 +88,27 @@ export default {
     ...mapGetters(['info']),
   },
   components: {
+    ActionForm,
     SortMenu,
     IncomeChart,
     OutcomeChart,
+    ChartBlock
   },
   data: () => ({
     type: '',
-    number: 0,
     categories: [],
-    chosenIcon: null,
     records: [],
     tempRecordsForCharts: [],
     sortMenu: false,
     isRerenderOut: null,
     isRerenderIn: null,
     loading: false,
-    isError: false,
     addDeleteLoading: false,
     showCharts: false,
     countedDate: 1,
+    refsButtons: []
   }),
   methods: {
-    chooseIcon(e) {
-      e.path[1].children.forEach(el => el.classList.remove('selected'))
-      e.target.classList.add('selected')
-      this.chosenIcon = e.target.id
-    },
     showSortMenu() {
       this.sortMenu = !this.sortMenu
     },
@@ -171,19 +132,12 @@ export default {
         })
       }, 300)
       this.showCharts = !this.showCharts
-
     },
 
-    async incomeSubmit() {
-      if (!this.chosenIcon || +this.number <= 0) {
-        this.isError = true
-        return
-      }
-      const record = {
-        categoryId: this.chosenIcon,
-        type: this.type,
-        countEmotions: +this.number,
-        date: new Date().toJSON()
+    async incomeSubmit(record) {
+      record = {
+        ...record,
+        type: this.type
       }
 
       try {
@@ -203,22 +157,16 @@ export default {
         this.hideForm()
         this.setup(this.categories)
 
-      } catch (e) {}
+      } catch (e) {
+      }
     },
 
-    async outcomeSubmit() {
-      if (!this.chosenIcon || +this.number <= 0) {
-        this.isError = true
-        return
-      }
+    async outcomeSubmit(record) {
 
-      const record = {
-        categoryId: this.chosenIcon,
-        type: this.type,
-        countEmotions: +this.number,
-        date: new Date().toJSON()
+      record = {
+        ...record,
+        type: this.type
       }
-
 
       try {
         this.addDeleteLoading = true
@@ -235,7 +183,7 @@ export default {
         this.info.sort === 'day' ? await this.showBalancePerDay() : await this.showAllBalance()
         this.addDeleteLoading = false
         this.hideForm()
-        await this.setup(this.categories)
+        this.setup(this.categories)
       } catch (e) {
       }
 
@@ -245,8 +193,8 @@ export default {
       n.setDate(n.getDate() + e);
       return n.toLocaleDateString();
     },
-    goBack(){
-      if (this.info.sort === 'day'){
+    goBack() {
+      if (this.info.sort === 'day') {
         let yesterday = this.dtime_nums(-this.countedDate)
         this.countedDate += 1
         const neededDate = this.records.filter(record => {
@@ -269,7 +217,7 @@ export default {
       this.tempRecordsForCharts = neededDate
 
       // Исправить
-      this.isRerenderIn = Date.now()+1
+      this.isRerenderIn = Date.now() + 1
       this.isRerenderOut = Date.now()
       neededDate.map(record => {
         if (record.type === 'income') {
@@ -293,7 +241,7 @@ export default {
         sort: 'all'
       }
       this.tempRecordsForCharts = this.records
-      this.isRerenderIn = Date.now()+1
+      this.isRerenderIn = Date.now() + 1
       this.isRerenderOut = Date.now()
       this.records.map(record => {
         if (record.type === 'income') {
@@ -308,6 +256,10 @@ export default {
       await this.$store.dispatch('updateInfo', emotions)
       this.sortMenu = false
     },
+    buttons(el) {
+      this.refsButtons.push(el)
+    },
+
   },
   async mounted() {
     this.loading = true
@@ -316,9 +268,15 @@ export default {
     this.info.sort === 'day' ? await this.showBalancePerDay() : await this.showAllBalance()
     this.categories = await this.$store.dispatch('fetchCategories')
     this.loading = false
-    // Chart.defaults.global.defaultFontColor = '#000000';
-    // Chart.defaults.global.defaultFontFamily = "'Montserrat', sans-serif";
+
+    // Проблема при быстром изменение графика, пока отключил анимацию
+    Chart.defaults.global.animation.duration = 0
+
   },
+  beforeUpdate() {
+    this.refsButtons = [] // reset empty before each update
+  },
+
 }
 </script>
 
