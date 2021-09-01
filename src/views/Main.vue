@@ -12,10 +12,12 @@
         </div>
         <SortMenu :class="{novisible: !sortMenu}"
                   @showBalancePerDay="showBalancePerDay"
+                  @showBalancePerMonth="showBalancePerMonth"
+                  @showBalancePerYear="showBalancePerYear"
                   :sort="info.sort"
                   @showAllBalance="showAllBalance"
                   @hide="showSortMenu"/>
-        <h4>Баланс "емоцій" за {{ info.sort === 'all' ? 'весь час' : info.sort === 'day' ? 'день' : '' }}:
+        <h4>Баланс "емоцій" за {{ nameOfDate }}:
           <strong>{{ info.emotions }}
             <svg width="22" height="19" viewBox="0 0 22 19" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -53,20 +55,22 @@
 
 
         <div v-if="type === 'outcome'" class="outcome-form form-emotions" @click="hideForm">
-          <ActionForm @submit="outcomeSubmit" :categories="categories" :addDeleteLoading="addDeleteLoading"
-                      @hideForm="hideForm" :text="'Удаление эмоции'"
+          <ActionForm @submit="emotionsFormHandler" :categories="categories" :addDeleteLoading="addDeleteLoading"
+                      @hideForm="hideForm" :text="'Удаление эмоции'" :type="'outcome'"
           />
         </div>
         <div v-if="type === 'income'" class="income-form form-emotions" @click="hideForm">
-          <ActionForm @submit="incomeSubmit" :categories="categories" :addDeleteLoading="addDeleteLoading"
-                      @hideForm="hideForm" :text="'Добавление эмоции'"
+          <ActionForm @submit="emotionsFormHandler" :categories="categories" :addDeleteLoading="addDeleteLoading"
+                      @hideForm="hideForm" :text="'Добавление эмоции'" :type="'income'"
           />
         </div>
       </div>
     </div>
     <div class="history-chart" v-if="records.length && categories.length && showCharts">
-      <ChartBlock :text="'Потерянные эмоции'" :categories="categories" :records="tempRecordsForCharts" :type="'outcome'" :key="tempRecordsForCharts.length"/>
-      <ChartBlock :text="'Полученные эмоции'" :categories="categories" :records="tempRecordsForCharts" :type="'income'" :key="tempRecordsForCharts.length"/>
+      <ChartBlock :text="'Потерянные эмоции'" :categories="categories" :records="tempRecordsForCharts" :type="'outcome'"
+                  :key="tempRecordsForCharts.length"/>
+      <ChartBlock :text="'Полученные эмоции'" :categories="categories" :records="tempRecordsForCharts" :type="'income'"
+                  :key="tempRecordsForCharts.length"/>
     </div>
   </div>
 
@@ -76,8 +80,6 @@
 <script>
 import {mapGetters} from 'vuex'
 import SortMenu from '@/components/main/SortMenu'
-import IncomeChart from '@/components/main/IncomeChart'
-import OutcomeChart from '@/components/main/OutcomeChart'
 import ActionForm from "@/components/main/ActionForm";
 import ChartBlock from "@/components/main/ChartBlock";
 
@@ -86,12 +88,21 @@ export default {
   name: 'main-page',
   computed: {
     ...mapGetters(['info']),
+    nameOfDate() {
+      if (this.info.sort === 'all') {
+        return 'весь час'
+      } else if (this.info.sort === 'day') {
+        return 'день'
+      } else if (this.info.sort === 'month') {
+        return 'місяць'
+      } else if (this.info.sort === 'year') {
+        return 'рік'
+      }
+    }
   },
   components: {
     ActionForm,
     SortMenu,
-    IncomeChart,
-    OutcomeChart,
     ChartBlock
   },
   data: () => ({
@@ -134,59 +145,37 @@ export default {
       this.showCharts = !this.showCharts
     },
 
-    async incomeSubmit(record) {
+    async emotionsFormHandler({record, type}){
       record = {
         ...record,
         type: this.type
       }
-
       try {
         this.addDeleteLoading = true
         await this.$store.dispatch('createRecord', record)
-        const emotions = {
-          incomeCount: this.info.incomeCount + +this.number,
-          outcomeCount: this.info.outcomeCount,
-          emotions: +this.info.emotions + +this.number
+        const emotions = {}
+        if (type === 'income'){
+          emotions.emotions = this.info.emotions + record.countEmotions
+          emotions.incomeCount = this.info.incomeCount + record.countEmotions
+        }else if (type === 'outcome'){
+          emotions.outcomeCount = this.info.outcomeCount + record.countEmotions
+          emotions.emotions = this.info.emotions - record.countEmotions
         }
-        await this.$store.dispatch('updateInfo', emotions)
         this.$message('Запись создана')
         this.chosenIcon = null
         this.records = await this.$store.dispatch('fetchRecords')
-        this.info.sort === 'day' ? await this.showBalancePerDay() : await this.showAllBalance()
-        this.addDeleteLoading = false
-        this.hideForm()
-        this.setup(this.categories)
-
-      } catch (e) {
-      }
-    },
-
-    async outcomeSubmit(record) {
-
-      record = {
-        ...record,
-        type: this.type
-      }
-
-      try {
-        this.addDeleteLoading = true
-        await this.$store.dispatch('createRecord', record)
-        const emotions = {
-          outcomeCount: this.info.outcomeCount + +this.number,
-          incomeCount: this.info.incomeCount,
-          emotions: +this.info.emotions - +this.number
-        }
         await this.$store.dispatch('updateInfo', emotions)
-        this.$message('Запись создана')
-        this.chosenIcon = null
-        this.records = await this.$store.dispatch('fetchRecords')
-        this.info.sort === 'day' ? await this.showBalancePerDay() : await this.showAllBalance()
+        // this.info.sort === 'day'
+        //     ? await this.showBalancePerDay() : this.info.sort === 'month'
+        //     ? await this.showBalancePerMonth() : this.info.sort === 'year'
+        //         ? await this.showBalancePerYear() : this.info.sort === 'week'
+        //             ? await this.showBalancePerWeek() : await this.showAllBalance()
+        // console.log(emotions, 'record')
         this.addDeleteLoading = false
         this.hideForm()
         this.setup(this.categories)
-      } catch (e) {
       }
-
+      catch (e){}
     },
     dtime_nums(e) {
       let n = new Date;
@@ -203,19 +192,14 @@ export default {
       }
     },
 
-    async showBalancePerDay() {
+    async showBalancePerDateHandler(date, neededDate) {
       this.showSortMenu()
       const emotions = {
         outcomeCount: 0,
         incomeCount: 0,
         emotions: 0,
-        sort: 'day'
+        sort: date
       }
-      const neededDate = this.records.filter(record => {
-        return new Date().toLocaleDateString() === new Date(record.date).toLocaleDateString()
-      })
-      this.tempRecordsForCharts = neededDate
-
       // Исправить
       this.isRerenderIn = Date.now() + 1
       this.isRerenderOut = Date.now()
@@ -229,33 +213,41 @@ export default {
         }
       })
       await this.$store.dispatch('updateInfo', emotions)
+      // console.log(emotions, 'method')
       this.sortMenu = false
     },
 
-    async showAllBalance() {
-      this.showSortMenu()
-      const emotions = {
-        outcomeCount: 0,
-        incomeCount: 0,
-        emotions: 0,
-        sort: 'all'
-      }
-      this.tempRecordsForCharts = this.records
-      this.isRerenderIn = Date.now() + 1
-      this.isRerenderOut = Date.now()
-      this.records.map(record => {
-        if (record.type === 'income') {
-          emotions.incomeCount += record.countEmotions
-          emotions.emotions += record.countEmotions
-        } else if (record.type === 'outcome') {
-          emotions.outcomeCount += record.countEmotions
-          emotions.emotions -= record.countEmotions
-        }
+    async showBalancePerDay() {
+      const neededDate = this.records.filter(record => {
+        return new Date().toLocaleDateString() === new Date(record.date).toLocaleDateString()
       })
-
-      await this.$store.dispatch('updateInfo', emotions)
-      this.sortMenu = false
+      this.tempRecordsForCharts = neededDate
+      await this.showBalancePerDateHandler('day', neededDate)
     },
+    async showBalancePerWeek() {
+
+    },
+    async showBalancePerMonth() {
+      const month = new Date().getMonth()
+      const neededDate = this.records.filter(record => {
+        return month === new Date(record.date).getMonth()
+      })
+      this.tempRecordsForCharts = neededDate
+      await this.showBalancePerDateHandler('month', neededDate)
+    },
+    async showBalancePerYear() {
+      const year = new Date().getFullYear()
+      const neededDate = this.records.filter(record => {
+        return year === new Date(record.date).getFullYear()
+      })
+      this.tempRecordsForCharts = neededDate
+      await this.showBalancePerDateHandler('year', neededDate)
+    },
+    async showAllBalance() {
+      this.tempRecordsForCharts = this.records
+      await this.showBalancePerDateHandler('all', this.records)
+    },
+
     buttons(el) {
       this.refsButtons.push(el)
     },
@@ -265,7 +257,11 @@ export default {
     this.loading = true
     this.records = await this.$store.dispatch('fetchRecords')
     await this.$store.dispatch('fetchInfo')
-    this.info.sort === 'day' ? await this.showBalancePerDay() : await this.showAllBalance()
+    this.info.sort === 'day'
+        ? await this.showBalancePerDay() : this.info.sort === 'month'
+        ? await this.showBalancePerMonth() : this.info.sort === 'year'
+            ? await this.showBalancePerYear() : this.info.sort === 'week'
+                ? await this.showBalancePerWeek() : await this.showAllBalance()
     this.categories = await this.$store.dispatch('fetchCategories')
     this.loading = false
 

@@ -10,7 +10,7 @@
 <!--      <p>Сам решаешь сколько эмоций получил</p>-->
 <!--    </section>-->
     <button @click="showForm" class="start-btn">Спробувати</button>
-<!--    <Faces />-->
+
   </div>
 
 </template>

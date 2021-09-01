@@ -2,8 +2,8 @@
   <div class="sort-menu">
     <button @click="$emit('showBalancePerDay')" id="day" :class="{active: $props.sort === 'day'}">День</button>
     <button disabled>Неделя</button>
-    <button disabled>Месяц</button>
-    <button disabled>Год</button>
+    <button @click="$emit('showBalancePerMonth')" id="month" :class="{active: $props.sort === 'month'}">Месяц</button>
+    <button @click="$emit('showBalancePerYear')" id="year" :class="{active: $props.sort === 'year'}">Год</button>
     <button @click="$emit('showAllBalance')" id="all" :class="{active: $props.sort === 'all'}">Все время</button>
   </div>
 </template>
@@ -11,7 +11,7 @@
 <script>
 export default {
   props: ['sort'],
-  data: () => ({}),
+  emits: ['showBalancePerMonth', 'showBalancePerDay', 'showAllBalance', 'showBalancePerYear'],
 }
 </script>
 

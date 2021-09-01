@@ -4,7 +4,7 @@
 
     <form @submit.prevent="submitHandler">
       <label>Введите кол-во эмоций</label>
-      <input type="number" placeholder="" v-model="number" >
+      <input type="number" placeholder="" v-model.number="number" >
       <p>Выберите категорию</p>
       <div class="record-icons">
         <button type="button" class="record-icon" v-for="icon in categories" @click="chooseIcon " :ref="buttons"
@@ -36,7 +36,8 @@ export default {
     addDeleteLoading: {
       type: Boolean
     },
-    text: String
+    text: String,
+    type: String
   },
   emits: ['submit', 'hideForm'],
   methods: {
@@ -58,11 +59,12 @@ export default {
         countEmotions: +this.number,
         date: new Date().toJSON()
       }
-      this.$emit('submit', record)
+      this.$emit('submit', {record, type: this.type})
     }
   },
   beforeUpdate() {
     this.refsButtons = [] // reset empty before each update
-  }
+  },
+
 }
 </script>
