@@ -70,6 +70,8 @@ export default {
         }
         this.isCopy = false
       }
+
+
       try {
         if (!this.isCopy) {
           this.loading = true
@@ -118,17 +120,15 @@ export default {
 
 <style scoped lang="scss">
 h4 {
-  color: #C0C0C0;
   font-size: 20px;
   text-align: left;
   font-weight: 500;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 h5 {
   font-weight: 400;
   font-size: 15px;
-  color: #C0C0C0;
 }
 
 input {

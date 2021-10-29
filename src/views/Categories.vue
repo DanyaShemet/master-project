@@ -23,7 +23,6 @@
                       @created="addNewCategory"
                       :icons="categoryIcons"
                       :categories="categories"/>
-
       <EditCategory v-if="isEditable && editableCategory"
                     :category="editableCategory"
                     :icons="categoryIcons"
@@ -31,7 +30,6 @@
                     @updated="updateCategories"
                     :key="isRerender"/>
     </div>
-
   </div>
 </template>
 
@@ -39,6 +37,7 @@
 import CreateCategory from '@/components/categories/CreateCategory'
 import EditCategory from '@/components/categories/EditCategory'
 import CategoryItem from "@/components/categories/CategoryItem";
+
 
 export default {
   data: () => ({
@@ -82,6 +81,7 @@ export default {
     loading: false,
     localLoader: false,
     deletedId: 0,
+    teacherPassword: '',
   }),
   async mounted() {
     this.loading = true
@@ -97,6 +97,9 @@ export default {
     }
   },
   methods: {
+    checkStatus(){
+      this.isTeacher = true
+    },
     deleteIcons(idx) {
       this.categoryIcons.splice(idx, 1)
     },
@@ -106,12 +109,12 @@ export default {
       this.categoryIcons = this.categoryIcons.filter(icon => icon !== category.icon)
     },
     updateCategories(category) {
-      const idx = this.categories.findIndex(c => c.id === category.id)
-      this.categoryIcons.push(this.categories[idx].icon)
-      this.categories[idx].title = category.title
-      this.categories[idx].icon = category.icon
-      this.categoryIcons = this.categoryIcons.filter(icon => icon !== category.icon)
-      this.isEditable = false
+        const idx = this.categories.findIndex(c => c.id === category.id)
+        this.categoryIcons.push(this.categories[idx].icon)
+        this.categories[idx].title = category.title
+        this.categories[idx].icon = category.icon
+        this.categoryIcons = this.categoryIcons.filter(icon => icon !== category.icon)
+        this.isEditable = false
     },
     async deleteCategory(e) {
       let catId = e
@@ -132,6 +135,7 @@ export default {
         this.isEditable = false
       }
       this.localLoader = false
+
       this.$message('Категорія була видалена')
     },
     async showEditableForm(e) {
@@ -171,8 +175,9 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/assets/_vars.scss';
 h4 {
-  color: #C0C0C0;
+  color: $secondary-color;
   text-align: left;
   font-weight: 500;
   font-size: 30px;

@@ -1,10 +1,18 @@
 <template>
   <div>
     <div class="menu">
-      <div class="menu-links">
-        <router-link to="/categories" active-class="active">Категории</router-link>
-        <router-link to="/main" active-class="active">Главная</router-link>
-        <router-link to="/statistic" active-class="active">Статистика</router-link>
+      <div class="menu-links" v-if="showStudentsButton">
+        <router-link :to="{name: 'main', params: {status: 'student'}}" active-class="active">Главная для студентов</router-link>
+      </div>
+      <div class="menu-links" v-else-if="showTeachersButton">
+        <router-link :to="{name: 'categories', params: {status: 'teacher'}}" active-class="active" >Категории</router-link>
+        <router-link :to="{name: 'main', params: {status: 'teacher'}}" active-class="active" >Главная для учителя</router-link>
+        <router-link :to="{name: 'statistic', params: {status: 'teacher'}}" active-class="active">Статистика</router-link>
+      </div>
+      <div class="menu-links" v-else>
+        <router-link :to="{name: 'categories', params: {status: 'individual'}}" active-class="active" >Категории</router-link>
+        <router-link :to="{name: 'main', params: {status: 'individual'}}" active-class="active" >Главная</router-link>
+        <router-link :to="{name: 'statistic', params: {status: 'individual'}}" active-class="active">Статистика</router-link>
       </div>
       <div class="logout">
         <p>
@@ -50,9 +58,16 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('fetchInfo')
+
   },
   computed: {
     ...mapGetters(['info']),
+    showTeachersButton(){
+      return this.$route.params.status === 'teacher'
+    },
+    showStudentsButton(){
+      return this.$route.params.status === 'student'
+    }
   }
 }
 </script>

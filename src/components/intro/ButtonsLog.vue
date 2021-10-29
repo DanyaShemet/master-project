@@ -64,7 +64,7 @@ button.google {
   padding: 5px 0;
 }
 
-.form-home {
+.popup {
   position: fixed;
   background-color: rgba(0, 0, 0, 0.2);
   height: 100%;
@@ -76,7 +76,7 @@ button.google {
   align-items: center;
   justify-content: center;
 
-  form {
+  .popup__content {
     width: 40%;
     background-color: #fff;
     border: 3px solid #000;

@@ -4,10 +4,9 @@
     <BigLoader v-if="loading"/>
     <div v-else-if="records.length">
       <div class="sort-block">
-        <p>Сортування за</p>
-        <SortButton @click="sortToName" :class="{active: sortActive === 'title'}">І</SortButton>
-        <SortButton @click="sortToDate" :class="{active: sortActive === 'date'}">Д</SortButton>
-        <SortButton @click="sortToCount" :class="{active: sortActive === 'count'}">К</SortButton>
+        <SortButton @click="sortToName" :class="{active: sortActive === 'title'}">Ім'ям</SortButton>
+        <SortButton @click="sortToDate" :class="{active: sortActive === 'date'}">Датою</SortButton>
+        <SortButton @click="sortToCount" :class="{active: sortActive === 'count'}">Кількість</SortButton>
       </div>
       <div class="records-stat">
 
@@ -25,12 +24,11 @@
           :records="records.length"
           :per-page="pageSize"
           @paginate="pageChangeHandler($event)"
-        />
+      />
     </div>
 
 
     <div v-else class="center">У вас нет ни одной записи
-      <router-link to="/main">Добавить запись</router-link>
     </div>
   </div>
 </template>
@@ -136,11 +134,12 @@ export default {
     },
 
 
-
   },
   computed: {
     ...mapGetters(['info']),
-
+    showTeachersButton() {
+      return this.$route.params.status === 'teacher'
+    },
   },
 }
 
@@ -159,11 +158,9 @@ export default {
 
 .sort-block button {
   border: 1px solid #000 !important;
-  width: 30px;
-  height: 30px;
   font-size: 18px;
-  border-radius: 50%;
   margin-right: 10px;
+  border-radius: 3px;
 
   &.active {
     background-color: #000;

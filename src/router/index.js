@@ -1,9 +1,10 @@
-import {createRouter, createWebHashHistory} from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import LoginAndRegister from '../views/LoginAndRegister.vue'
 import Main from '../views/Main.vue'
 import Categories from '../views/Categories.vue'
 import Statistic from '../views/Statistic.vue'
 import * as firebase from "firebase";
+import Check from "../views/Check";
 
 const routes = [
     {
@@ -13,19 +14,25 @@ const routes = [
         component: LoginAndRegister
     },
     {
-        path: '/main',
-        name: 'Profile',
+        path: '/main/:status',
+        name: 'main',
         meta: {layout: "main", auth: true},
         component: Main,
     },
     {
-        path: '/categories',
+        path: '/check',
+        name: 'check',
+        meta: {layout: "home", auth: true},
+        component: Check,
+    },
+    {
+        path: '/categories/:status',
         name: 'categories',
         meta: {layout: "main", auth: true},
         component: Categories
     },
     {
-        path: '/statistic',
+        path: '/statistic/:status',
         name: 'statistic',
         meta: {layout: "main", auth: true},
         component: Statistic
@@ -34,9 +41,10 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHashHistory(),
-    base: process.env.BASE_URL,
-    routes
+    history: createWebHistory(),
+    routes,
+    mode: 'history',
+    hasbang:false
 })
 
 router.beforeEach((to, from, next) => {

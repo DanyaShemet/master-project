@@ -1,7 +1,7 @@
 <template>
-  <div class="form-home" @click="hideForm">
-    <form @submit.prevent="submitHandler" @click.stop>
-      <h5>Вход по Email</h5>
+  <div class="popup" @click="hideForm">
+    <form @submit.prevent="submitHandler" class="popup__content" @click.stop>
+      <h5>Вхід в классний аккаунт</h5>
       <div class="row">
         <div class="input-field  s12">
           <input id="email" type="email"
@@ -30,8 +30,8 @@
         </div>
       </div>
 
-      <button class="log" type="submit">Войти</button>
-      <p class="or">Или воспользуйтесь Google</p>
+      <button class="log" type="submit">Увійти</button>
+      <p class="or">Для індивідуального аккаунту використайте Google</p>
       <button @click="$emit('google')" type="button" class="google">
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="Capa_1" x="0px" y="0px" width="20"
              viewBox="0 0 510 510" style="enable-background:new 0 0 510 510;" xml:space="preserve">
@@ -80,7 +80,7 @@ export default {
 
       try {
         await this.$store.dispatch('login', formData)
-        this.$router.push('/main')
+        this.$router.push('/check')
       } catch (e) {
       }
 

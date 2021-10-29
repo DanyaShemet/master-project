@@ -4,7 +4,7 @@
 
     <form @submit.prevent="submitHandler">
       <label>Введите кол-во эмоций</label>
-      <input type="number" placeholder="" v-model.number="number" >
+      <input type="number" placeholder="" v-model.number="number" max="7" min="-7" >
       <p>Выберите категорию</p>
       <div class="record-icons">
         <button type="button" class="record-icon" v-for="icon in categories" @click="chooseIcon " :ref="buttons"

@@ -41,27 +41,27 @@
           <p class="inc">Зароблено: {{ info.incomeCount }}</p>
         </div>
 
-        <div class="action-buttons" v-if="categories.length" ref="charts">
+        <div class="action-buttons" v-if="categories.length && !showTeachersButton" ref="charts">
           <button @click="showIncomeForm" class="plus-emotion action-emotion">+</button>
           <button @click="showOutcomeForm" class="minus-emotion action-emotion">-</button>
         </div>
-        <div v-else class="center">У вас немає жодної категорії
+        <div v-else-if="!categories.length" class="center">У вас немає жодної категорії
           <router-link to="/categories">Додати категорії</router-link>
         </div>
 
         <button @click="showHideCharts" class="show-charts" v-if="records.length && categories.length"
-                :class="{show: showCharts}">{{ showCharts ? 'Скрыть' : 'Показать' }} график
+                :class="{show: showCharts}">{{ showCharts ? 'Скрыть' : 'Показати' }} график
         </button>
 
 
         <div v-if="type === 'outcome'" class="outcome-form form-emotions" @click="hideForm">
           <ActionForm @submit="emotionsFormHandler" :categories="categories" :addDeleteLoading="addDeleteLoading"
-                      @hideForm="hideForm" :text="'Удаление эмоции'" :type="'outcome'"
+                      @hideForm="hideForm" :text="'Видалення емоції'" :type="'outcome'"
           />
         </div>
         <div v-if="type === 'income'" class="income-form form-emotions" @click="hideForm">
           <ActionForm @submit="emotionsFormHandler" :categories="categories" :addDeleteLoading="addDeleteLoading"
-                      @hideForm="hideForm" :text="'Добавление эмоции'" :type="'income'"
+                      @hideForm="hideForm" :text="'Додавання емоції'" :type="'income'"
           />
         </div>
       </div>
@@ -98,7 +98,10 @@ export default {
       } else if (this.info.sort === 'year') {
         return 'рік'
       }
-    }
+    },
+    showTeachersButton(){
+      return this.$route.params.status === 'teacher'
+    },
   },
   components: {
     ActionForm,
@@ -364,7 +367,6 @@ h4 {
   font-size: 30px;
   text-align: center;
   margin-bottom: 20px;
-
   svg {
     margin-left: 5px;
   }

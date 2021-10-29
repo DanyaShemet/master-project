@@ -4,13 +4,37 @@
       <h1>Аналізуй не аналізуєме</h1>
       <ButtonsLog @google="googleHandler" :isShowForm="isShowForm" @hideFormToButtons="hideForm"/>
     </header>
-<!--    <section class="content">-->
-<!--      <p>Сам решаешь как считать свои эмоции</p>-->
-<!--      <p>Сам решаешь сколько эмоций потратил</p>-->
-<!--      <p>Сам решаешь сколько эмоций получил</p>-->
-<!--    </section>-->
-    <button @click="showForm" class="start-btn">Спробувати</button>
+    <section class="content">
+      <img src="../assets/emotionally-stable.png" alt="">
+      <p>Вітаю тебе на сторінці оцінки емоціної складової в классі. </p>
+      <p>Перед початком ознайомтеся з правилами <span @click="showInstruction">тут</span></p>
+    </section>
+    <button @click="showForm" class="start-btn">Увійти в аккаунт</button>
+    <div class="popup" v-if="isShowInstruction" @click="showInstruction">
+      <div @click.stop class="popup__content">
+        <h6 class="bold">ДЛЯ УЧНІВ</h6>
+        <p>Після того як ви зайдете в обліковий аккаунт класу, вам буде доступно додавання або віднімання емоцій в конкретну категорію.
+          Про критерії оцінювання читайте в
+          <span>КРИТЕРІЇ ОЦІНКИ</span> нижче</p>
+        <h6  class="bold">ДЛЯ ВЧИТЕЛІВ</h6>
+        <p>Після того як ви зайдете в обліковий аккаунт класу, ви зможете створити категорії для оцінки емоційної
+          складової колективу. На сторінці КАТЕГОРІЇ вам буде доступна форма для цього.</p>
+        <p>Після створення категорій учні зможуть побачити їх на сторінці ГОЛОВНА при додаванні або відніманні емоції</p>
+        <h6 class="bold">ДЛЯ ІНДИВІДУАЛЬНОГО ВИКОРИСТАННЯ</h6>
+        <p>Якщо ви бажаєте використовувати додаток в особистому житті, авторизуйтеся в додаток через <span>Google</span></p>
+        <h6  class="bold">ОСНОВНІ ПОЛОЖЕННЯ</h6>
+        <p>1. Додавати, змінювати, видаляти категорії може лише викладач</p>
+        <p>2. Переглядати, видаляти записи може лише викладач </p>
+        <p>3. Додавати записи може лише учень</p>
+        <p>4. Классний аккаунт створюється за допомогою пошти і паролю</p>
+        <p>5. Особисті аккаунти сторюються за допомогою авторизації через <span>Google</span></p>
+        <h6  class="bold">КРИТЕРІЇ ОЦІНКИ</h6>
+        <p>1. Максимальна позитивна оцінка для однієї категорії: <span>7</span></p>
+        <p class="mb-2">2. Максимальна негативна оцінка для однієї категорії: <span>-7</span></p>
+        <button class="start-btn" @click="showInstruction">Все зрозуміло</button>
+      </div>
 
+    </div>
   </div>
 
 </template>
@@ -24,10 +48,11 @@ import firebase from "firebase/app";
 export default {
   name: 'home',
   data: () => ({
-    isShowForm: false
+    isShowForm: false,
+    isShowInstruction: false
   }),
   components: {
-    ButtonsLog,Faces
+    ButtonsLog, Faces
   },
   computed: {
     error() {
@@ -49,14 +74,21 @@ export default {
           name: user.displayName
         }
         await this.$store.dispatch('loginGoogleUser', formDataGoogle)
-        this.$router.push('/main')
+        this.$router.push({
+          name: 'main',
+          params: {status: 'ind'}
+        })
 
-      } catch (e) {}
+      } catch (e) {
+      }
     },
-    showForm(){
+    showForm() {
       this.isShowForm = true
     },
-    hideForm(){
+    showInstruction() {
+      this.isShowInstruction = !this.isShowInstruction
+    },
+    hideForm() {
       this.isShowForm = false
     }
   },
@@ -74,6 +106,15 @@ export default {
 </script>
 
 <style lang="scss">
+.mb-2{
+  margin-bottom: 20px;
+}
+.bold{
+  font-weight: bold;
+}
+p span{
+  font-weight: bold;
+}
 header {
   padding-top: 50px;
   display: flex;
@@ -105,17 +146,34 @@ header {
   }
 }
 
-.content{
+.content {
   width: 90%;
   margin: 60px auto 60px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 
-  p{
+  p {
     font-size: 30px;
     font-weight: 400;
     margin-bottom: 20px;
+
+    span {
+      color: #FF8C00;
+      cursor: pointer;
+    }
   }
+
+  img {
+    max-width: 100%;
+    width: 300px;
+    margin-bottom: 20px;
+  }
+
 }
-.start-btn{
+
+.start-btn {
   display: block;
   margin: 0 auto;
   border: 2px solid #000;
@@ -125,7 +183,8 @@ header {
   border-radius: 10px;
   cursor: pointer;
   transition: all .3s;
-  &:hover{
+
+  &:hover {
     color: #fff;
     background-color: #000;
   }
@@ -140,21 +199,22 @@ header {
       font-size: 40px;
     }
   }
-  .content{
+  .content {
     width: 95%;
     margin: 20px auto 20px auto;
 
-    p{
+    p {
       font-size: 16px;
       font-weight: 400;
       margin-bottom: 10px;
     }
   }
-  .start-btn{
+  .start-btn {
     font-size: 18px;
     padding: 10px 12px;
     border-radius: 10px;
-    &:hover{
+
+    &:hover {
       color: #fff;
       background-color: #000;
     }

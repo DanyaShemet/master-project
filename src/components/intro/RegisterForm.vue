@@ -1,8 +1,8 @@
 <template>
-  <div class="form-home" @click="hideForm">
+  <div class="popup" @click="hideForm">
 
-    <form class="" @submit.prevent="submitHandler" @click.stop>
-      <h5>Регистрация</h5>
+    <form class="popup__content" @submit.prevent="submitHandler" @click.stop>
+      <h5>Регістрація классного аккаунту</h5>
       <div class="row">
         <div class="input-field  s12">
           <input id="email" type="email"
@@ -35,7 +35,7 @@
           <input id="name" type="text" v-model.trim="v$.name.$model"
                  :class="{invalid: v$.name.$errors[0]}"
           >
-          <label for="name">Имя</label>
+          <label for="name">Ім'я класу</label>
           <small class="helper-text invalid" v-for="(error, index) of v$.name.$errors" :key="index">
                   <span v-if="error.$message === 'Value is required'">Введите
                   имя</span>
@@ -44,8 +44,8 @@
       </div>
 
 
-      <button class="log" type="submit">Зарегистрироваться</button>
-      <p class="or">Или воспользуйтесь Google</p>
+      <button class="log" type="submit">Зареєструвати</button>
+      <p class="or">Для індивідуального аккаунту використайте Google</p>
       <button @click="$emit('google')" type="button" class="google">
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="Capa_1" x="0px" y="0px" width="20"
              viewBox="0 0 510 510" style="enable-background:new 0 0 510 510;" xml:space="preserve">
@@ -97,7 +97,7 @@ export default {
       };
       try {
         await this.$store.dispatch('registerUser', formData)
-        this.$router.push('/main')
+        this.$router.push('/check')
       } catch (e) {
       }
     },
