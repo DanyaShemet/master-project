@@ -122,16 +122,16 @@ button.google {
 }
 
 @media screen and (max-width: 768px){
-  .form-home {
-    form {
+  .popup {
+    .popup__content {
       width: 60%;
     }
   }
 }
 
 @media screen and (max-width: 550px){
-  .form-home {
-    form {
+  .popup {
+    .popup__content {
       width: 80%;
     }
   }

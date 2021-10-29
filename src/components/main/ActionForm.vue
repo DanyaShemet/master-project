@@ -3,9 +3,9 @@
     <h4>{{text}}</h4>
 
     <form @submit.prevent="submitHandler">
-      <label>Введите кол-во эмоций</label>
+      <label>Введіть кількість емоцій</label>
       <input type="number" placeholder="" v-model.number="number" max="7" min="-7" >
-      <p>Выберите категорию</p>
+      <p>Оберіть категорію</p>
       <div class="record-icons">
         <button type="button" class="record-icon" v-for="icon in categories" @click="chooseIcon " :ref="buttons"
                 :id="icon.id">
@@ -15,7 +15,7 @@
       </div>
       <button class="plus-record action-button">+</button>
     </form>
-    <p v-if="isError" class="error">Напишите количество эмоций и выбери иконку</p>
+    <p v-if="isError" class="error">Введіть кількість емоцій і оберіть іконку</p>
     <Loader v-if="addDeleteLoading"/>
     <button @click="this.$emit('hideForm')" class="close action-button">-</button>
   </div>

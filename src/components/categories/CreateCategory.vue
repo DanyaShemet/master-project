@@ -1,11 +1,11 @@
 <template>
   <div class="create-category" ref="create">
-    <h4>Создание категории</h4>
+    <h4>Створення категорії</h4>
     <form @submit.prevent="submitHandler">
-      <input type="text" placeholder="Введите название категории, например: Семья; Друзья; Работа"
+      <input type="text" placeholder="Введіть назву категорії, наприклад: Сім'я; Друзі; Робота"
              v-model="v$.title.$model"
              :class="{invalid: v$.title.$errors[0] }">
-      <h5>Выберите подходящую иконку</h5>
+      <h5>Виберіть відповідну іконку</h5>
       <div class="category-buttons">
 
         <button class="icon-item" :ref="buttons" type="button" @click="chooseIcon" v-for="icon in icons" :id="icon">
@@ -17,15 +17,15 @@
 
       <button class="plus-category action-emotion" :disabled="loading">+</button>
     </form>
-    <p v-if="isCopy" class="error">Категория с таким именем уже есть, не стоит ее дублировать</p>
+    <p v-if="isCopy" class="error">Категорія з таким ім'ям вже є, не варто її дублювати</p>
     <div v-for="(error, index) of v$.title.$errors" :key="index">
-      <p class="error" v-if="error.$message === 'Value is required'">Введите название категории</p>
-      <p class="error" v-if="error.$message === 'This field should be at least 2 long'">Название категории слишком
-        короткое, минимум 2 символа</p>
-      <p class="error" v-if="error.$message === 'The maximum length allowed is 15'">Название категории слишком длинное,
-        максимум 15 символов</p>
+      <p class="error" v-if="error.$message === 'Value is required'">Введіть назву категорії</p>
+      <p class="error" v-if="error.$message === 'This field should be at least 2 long'">Назва категорії занадто
+        короткий, мінімум 2 символи</p>
+      <p class="error" v-if="error.$message === 'The maximum length allowed is 25'">Назва категорії занадто довга,
+        максимум 25 символів</p>
     </div>
-    <p v-if="isError.icon" class="error">Выберите иконку</p>
+    <p v-if="isError.icon" class="error">Виберіть іконку</p>
     <Loader v-if="loading" class=" mt-10"/>
   </div>
 </template>
@@ -51,7 +51,7 @@ export default {
   }),
   validations() {
     return {
-      title: {required, minLength: minLength(2), maxLength: maxLength(15)},
+      title: {required, minLength: minLength(2), maxLength: maxLength(25)},
     }
   },
   methods: {

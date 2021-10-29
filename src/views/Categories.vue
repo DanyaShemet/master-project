@@ -2,7 +2,7 @@
   <div class="categories container" ref="categories">
     <BigLoader v-if="loading"/>
     <div v-else>
-      <h4>Ваши категории</h4>
+      <h4>Ваші категорії</h4>
       <div class="categories-wrap" :class="categories.length % 3 === 0 ? 'sb' : ''">
           <CategoryItem
               :categoryInfo="category"
@@ -71,6 +71,10 @@ export default {
       'alternate_email',
       'center_focus_strong',
       'play_circle_filled',
+      'psychology',
+      'sports_kabaddi',
+      'kayaking',
+      'mood_bad',
     ],
     categories: [],
     isEditable: false,
@@ -82,6 +86,7 @@ export default {
     localLoader: false,
     deletedId: 0,
     teacherPassword: '',
+
   }),
   async mounted() {
     this.loading = true
@@ -97,9 +102,6 @@ export default {
     }
   },
   methods: {
-    checkStatus(){
-      this.isTeacher = true
-    },
     deleteIcons(idx) {
       this.categoryIcons.splice(idx, 1)
     },
@@ -198,7 +200,7 @@ h4 {
     border-radius: 5px;
     display: flex;
     align-items: center;
-    width: 33%;
+    width: 50%;
 
     .category-item-user {
       width: 41px;
@@ -216,7 +218,6 @@ h4 {
       font-weight: 300;
       margin-right: 15px;
       text-overflow: ellipsis;
-      width: 60px;
       overflow: hidden;
     }
 

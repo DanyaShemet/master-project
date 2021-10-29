@@ -50,7 +50,7 @@
         </div>
 
         <button @click="showHideCharts" class="show-charts" v-if="records.length && categories.length"
-                :class="{show: showCharts}">{{ showCharts ? 'Скрыть' : 'Показати' }} график
+                :class="{show: showCharts}">{{ showCharts ? 'Приховати' : 'Показати' }} графік
         </button>
 
 
@@ -67,13 +67,12 @@
       </div>
     </div>
     <div class="history-chart" v-if="records.length && categories.length && showCharts">
-      <ChartBlock :text="'Потерянные эмоции'" :categories="categories" :records="tempRecordsForCharts" :type="'outcome'"
+      <ChartBlock :text="'Втраченні емоції'" :categories="categories" :records="tempRecordsForCharts" :type="'outcome'"
                   :key="tempRecordsForCharts.length"/>
-      <ChartBlock :text="'Полученные эмоции'" :categories="categories" :records="tempRecordsForCharts" :type="'income'"
+      <ChartBlock :text="'Отриманни емоції'" :categories="categories" :records="tempRecordsForCharts" :type="'income'"
                   :key="tempRecordsForCharts.length"/>
     </div>
   </div>
-
 </template>
 
 
@@ -293,7 +292,7 @@ export default {
   justify-content: center;
 
   .form {
-    width: 30%;
+    width: 50%;
     padding: 10px;
     position: relative;
     border-radius: 20px;

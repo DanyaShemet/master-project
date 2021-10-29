@@ -28,7 +28,7 @@
     </div>
 
 
-    <div v-else class="center">У вас нет ни одной записи
+    <div v-else class="center">У вас немає жодного запису
     </div>
   </div>
 </template>

@@ -193,6 +193,7 @@ header {
 @media screen and (max-width: 768px) {
   header {
     flex-direction: column;
+    padding-top: 20px;
 
     h1 {
       margin-bottom: 30px;
@@ -207,6 +208,9 @@ header {
       font-size: 16px;
       font-weight: 400;
       margin-bottom: 10px;
+    }
+    img {
+      width: 200px;
     }
   }
   .start-btn {
@@ -228,5 +232,10 @@ header {
       font-size: 25px;
     }
   }
+  .popup__content{
+    overflow-y: scroll;
+    height: 90%;
+  }
+
 }
 </style>

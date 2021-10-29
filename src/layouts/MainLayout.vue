@@ -2,16 +2,16 @@
   <div>
     <div class="menu">
       <div class="menu-links" v-if="showStudentsButton">
-        <router-link :to="{name: 'main', params: {status: 'student'}}" active-class="active">Главная для студентов</router-link>
+        <router-link :to="{name: 'main', params: {status: 'student'}}" active-class="active">Головна для студентів</router-link>
       </div>
       <div class="menu-links" v-else-if="showTeachersButton">
-        <router-link :to="{name: 'categories', params: {status: 'teacher'}}" active-class="active" >Категории</router-link>
-        <router-link :to="{name: 'main', params: {status: 'teacher'}}" active-class="active" >Главная для учителя</router-link>
+        <router-link :to="{name: 'categories', params: {status: 'teacher'}}" active-class="active" >Категорії</router-link>
+        <router-link :to="{name: 'main', params: {status: 'teacher'}}" active-class="active" >Головна для вчителя</router-link>
         <router-link :to="{name: 'statistic', params: {status: 'teacher'}}" active-class="active">Статистика</router-link>
       </div>
       <div class="menu-links" v-else>
-        <router-link :to="{name: 'categories', params: {status: 'individual'}}" active-class="active" >Категории</router-link>
-        <router-link :to="{name: 'main', params: {status: 'individual'}}" active-class="active" >Главная</router-link>
+        <router-link :to="{name: 'categories', params: {status: 'individual'}}" active-class="active" >Категорії</router-link>
+        <router-link :to="{name: 'main', params: {status: 'individual'}}" active-class="active" >Головна</router-link>
         <router-link :to="{name: 'statistic', params: {status: 'individual'}}" active-class="active">Статистика</router-link>
       </div>
       <div class="logout">

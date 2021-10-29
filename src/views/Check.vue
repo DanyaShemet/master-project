@@ -86,4 +86,19 @@ h2{
     background-color: $primary-color;
   }
 }
+@media (max-width: 768px) {
+
+  h2{
+    font-size: 20px;
+    text-align: center;
+  }
+  .check__wrapper{
+    flex-direction: column;
+    width: 100%;
+  }
+  .check__teacher, .check__student{
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
 </style>

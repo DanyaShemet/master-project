@@ -35,7 +35,7 @@
       </svg>
     </p>
     <p class="date"><span class="label"> Дата:</span> {{ new Date(record.date).toLocaleDateString() }}</p>
-    <p class="category"><span class="label">Категория:</span> <span>{{ record.categoryTitle }}</span> <i
+    <p class="category"><span class="label">Категорія:</span> <span>{{ record.categoryTitle }}</span> <i
         class="material-icons">{{ record.icon }}</i>
     </p>
     <p class="type" :class="record.type === 'outcome' ? 'lost' : 'add'">
