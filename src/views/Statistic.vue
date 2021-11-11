@@ -8,9 +8,10 @@
         <SortButton @click="sortToDate" :class="{active: sortActive === 'date'}">Датою</SortButton>
         <SortButton @click="sortToCount" :class="{active: sortActive === 'count'}">Кількість</SortButton>
       </div>
+
       <div class="records-stat">
 
-        <RecordStatItem v-for="(record, idx) in recordsSubarray" :key="record.id"
+        <RecordStatItem v-for="(record, idx) in records" :key="record.id"
                         :record="record"
                         :idx="idx"
                         @deleteRecord="deleteRecord"
@@ -84,6 +85,7 @@ export default {
 
       await this.$store.dispatch('deleteRecords', recordId)
       await this.$message('Эмоция была удалена')
+      this.deleteLoading = false
       if (this.records.length > 1) {
         let cat = this.records.filter(c => {
           return c.id !== recordId
@@ -92,6 +94,7 @@ export default {
       } else {
         this.records = []
       }
+
     },
     sortToName() {
       this.sortActive = 'title'

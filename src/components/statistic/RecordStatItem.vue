@@ -59,7 +59,6 @@ export default {
       return {
         active: this.deleteLoading && this.deletedId === this.record.id,
         done: !this.deleteLoading
-
       }
     }
   },

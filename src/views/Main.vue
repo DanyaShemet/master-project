@@ -68,7 +68,7 @@
     </div>
     <div class="history-chart" v-if="records.length && categories.length && showCharts">
       <ChartBlock :text="'Втраченні емоції'" :categories="categories" :records="tempRecordsForCharts" :type="'outcome'"
-                  :key="tempRecordsForCharts.length"/>
+                  :key="tempRecordsForCharts.length" />
       <ChartBlock :text="'Отриманни емоції'" :categories="categories" :records="tempRecordsForCharts" :type="'income'"
                   :key="tempRecordsForCharts.length"/>
     </div>
@@ -113,8 +113,6 @@ export default {
     records: [],
     tempRecordsForCharts: [],
     sortMenu: false,
-    isRerenderOut: null,
-    isRerenderIn: null,
     loading: false,
     addDeleteLoading: false,
     showCharts: false,
@@ -167,12 +165,11 @@ export default {
         this.chosenIcon = null
         this.records = await this.$store.dispatch('fetchRecords')
         await this.$store.dispatch('updateInfo', emotions)
-        // this.info.sort === 'day'
-        //     ? await this.showBalancePerDay() : this.info.sort === 'month'
-        //     ? await this.showBalancePerMonth() : this.info.sort === 'year'
-        //         ? await this.showBalancePerYear() : this.info.sort === 'week'
-        //             ? await this.showBalancePerWeek() : await this.showAllBalance()
-        // console.log(emotions, 'record')
+        this.info.sort === 'day'
+            ? await this.showBalancePerDay() : this.info.sort === 'month'
+            ? await this.showBalancePerMonth() : this.info.sort === 'year'
+                ? await this.showBalancePerYear() : this.info.sort === 'week'
+                    ? await this.showBalancePerWeek() : await this.showAllBalance()
         this.addDeleteLoading = false
         this.hideForm()
         this.setup(this.categories)
@@ -202,9 +199,6 @@ export default {
         emotions: 0,
         sort: date
       }
-      // Исправить
-      this.isRerenderIn = Date.now() + 1
-      this.isRerenderOut = Date.now()
       neededDate.map(record => {
         if (record.type === 'income') {
           emotions.incomeCount += record.countEmotions
@@ -215,7 +209,6 @@ export default {
         }
       })
       await this.$store.dispatch('updateInfo', emotions)
-      // console.log(emotions, 'method')
       this.sortMenu = false
     },
 

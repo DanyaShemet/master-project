@@ -8,10 +8,10 @@
 
 <script>
 // import {Pie, mixins} from 'vue-chartjs'
-import {Pie} from 'vue3-chart-v2'
+import {Doughnut} from 'vue3-chart-v2'
 
 export default {
-  extends: Pie,
+  extends: Doughnut,
   props: {
     categories: {
       type: Array,
@@ -41,6 +41,7 @@ export default {
       let a = '0.' + this.randomInteger(2, 5)
       backgroundColor.push(`rgba(${r},${g},${b},${a})`)
     }
+
     this.renderChart({
       labels: this.categories.map(c => c.title),
       datasets: [{
