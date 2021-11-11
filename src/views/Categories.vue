@@ -298,7 +298,7 @@ div.done {
 
 @media screen and (max-width: 550px) {
   .categories-wrap {
-    height: 200px;
+    height: 300px;
     overflow-y: scroll;
 
     .category-item {

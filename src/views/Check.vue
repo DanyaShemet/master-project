@@ -1,7 +1,7 @@
 <template>
 
   <div class="check">
-    <h2>Вчитель чи учень? Обери себе</h2>
+    <h2>Вчитель чи учень? Обери себе </h2>
     <div class="check__wrapper">
       <div class="check__teacher" @click="signTeacher">
         <img src="../assets/teacher.png" alt="">
@@ -10,6 +10,7 @@
         <img src="../assets/student.png" alt="">
       </div>
     </div>
+
     <CheckForm :password="PASSWORD" v-if="isShowTeacherForm" @accept="acceptTeacher" @hideForm="hideForm" />
   </div>
 </template>
@@ -17,7 +18,7 @@
 <script>
 import CheckForm from "../components/CheckForm";
 
-const PASSWORD = 'q1w2e3r4'
+const PASSWORD = process.env.VUE_APP_TEACHER_PASSWORD
 export default {
   name: "Check",
   data(){

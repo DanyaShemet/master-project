@@ -39,7 +39,7 @@
         class="material-icons">{{ record.icon }}</i>
     </p>
     <p class="type" :class="record.type === 'outcome' ? 'lost' : 'add'">
-      {{ record.type === 'outcome' ? `- Потеря` : '+ Добавление' }}</p>
+      {{ record.type === 'outcome' ? `- Втрата` : '+ Додавання' }}</p>
   </div>
 </template>
 

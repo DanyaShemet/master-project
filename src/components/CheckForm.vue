@@ -1,12 +1,12 @@
 <template>
   <div class="form-emotions"  @click="hideForm">
     <div class="form" @click="(e) => {e.stopPropagation()}">
-      <h4>Введите учительский пароль</h4>
+      <h4>Введіть вчительський пароль</h4>
       <form @submit.prevent="passwordHandler">
         <input type="password" placeholder="Пароль" v-model="teacherPassword" >
         <button class="close action-button">+</button>
       </form>
-      <p class="error" v-if="error">Произошла ошибка</p>
+      <p class="error" v-if="error">Виникла помилка</p>
     </div>
   </div>
 

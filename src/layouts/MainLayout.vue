@@ -6,7 +6,7 @@
       </div>
       <div class="menu-links" v-else-if="showTeachersButton">
         <router-link :to="{name: 'categories', params: {status: 'teacher'}}" active-class="active" >Категорії</router-link>
-        <router-link :to="{name: 'main', params: {status: 'teacher'}}" active-class="active" >Головна для вчителя</router-link>
+        <router-link :to="{name: 'main', params: {status: 'teacher'}}" active-class="active" class="text-center">Головна для вчителя</router-link>
         <router-link :to="{name: 'statistic', params: {status: 'teacher'}}" active-class="active">Статистика</router-link>
       </div>
       <div class="menu-links" v-else>
@@ -170,5 +170,8 @@ export default {
     }
   }
 
+}
+.text-center{
+  text-align: center;
 }
 </style>

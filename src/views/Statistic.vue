@@ -8,10 +8,14 @@
         <SortButton @click="sortToDate" :class="{active: sortActive === 'date'}">Датою</SortButton>
         <SortButton @click="sortToCount" :class="{active: sortActive === 'count'}">Кількість</SortButton>
       </div>
+      <div class="sort-block filter">
+        <SortButton @click="onlyIncome('income')" :class="{active: filter === 'income'}">+</SortButton>
+        <SortButton @click="onlyIncome('outcome')" :class="{active: filter === 'outcome'}">-</SortButton>
+        <SortButton @click="resetFilter">Скинути фільтр</SortButton>
+      </div>
 
       <div class="records-stat">
-
-        <RecordStatItem v-for="(record, idx) in records" :key="record.id"
+        <RecordStatItem v-for="(record, idx) in recordsSubarray" :key="record.id"
                         :record="record"
                         :idx="idx"
                         @deleteRecord="deleteRecord"
@@ -45,14 +49,17 @@ export default {
   name: 'statistic',
   components: {RecordStatItem, SortButton},
   mixins: [paginationMixin],
-  data: () => ({
-    records: [],
-    categories: [],
-    loading: false,
-    deleteLoading: false,
-    deletedId: 0,
-    sortActive: 'date',
-  }),
+  data(){
+    return{
+      records: [],
+      categories: [],
+      loading: false,
+      deleteLoading: false,
+      deletedId: 0,
+      sortActive: 'date',
+      filter: null,
+    }
+  },
   async mounted() {
     this.sortActive = 'date'
     this.loading = true
@@ -95,6 +102,7 @@ export default {
         this.records = []
       }
 
+      this.setupPagination(this.records)
     },
     sortToName() {
       this.sortActive = 'title'
@@ -135,8 +143,15 @@ export default {
       })
       this.setupPagination(this.records)
     },
-
-
+    onlyIncome(filter){
+      this.filter = filter
+      const records = this.records.filter(r => r.type === filter)
+      this.setupPagination(records)
+    },
+    resetFilter(){
+      this.filter = null
+      this.setupPagination(this.records)
+    }
   },
   computed: {
     ...mapGetters(['info']),

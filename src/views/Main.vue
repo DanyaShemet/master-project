@@ -37,7 +37,7 @@
         </h4>
 
         <div class="stat">
-          <p class="out">Витрачено: {{ info.outcomeCount }}</p>
+          <p class="out">Втрачено: {{ info.outcomeCount }}</p>
           <p class="inc">Зароблено: {{ info.incomeCount }}</p>
         </div>
 
@@ -46,7 +46,6 @@
           <button @click="showOutcomeForm" class="minus-emotion action-emotion">-</button>
         </div>
         <div v-else-if="!categories.length" class="center">У вас немає жодної категорії
-          <router-link to="/categories">Додати категорії</router-link>
         </div>
 
         <button @click="showHideCharts" class="show-charts" v-if="records.length && categories.length"
@@ -56,12 +55,12 @@
 
         <div v-if="type === 'outcome'" class="outcome-form form-emotions" @click="hideForm">
           <ActionForm @submit="emotionsFormHandler" :categories="categories" :addDeleteLoading="addDeleteLoading"
-                      @hideForm="hideForm" :text="'Видалення емоції'" :type="'outcome'"
+                      @hideForm="hideForm" :text="'Втрата емоцій'" :type="'outcome'"
           />
         </div>
         <div v-if="type === 'income'" class="income-form form-emotions" @click="hideForm">
           <ActionForm @submit="emotionsFormHandler" :categories="categories" :addDeleteLoading="addDeleteLoading"
-                      @hideForm="hideForm" :text="'Додавання емоції'" :type="'income'"
+                      @hideForm="hideForm" :text="'Додавання емоцій'" :type="'income'"
           />
         </div>
       </div>
@@ -261,7 +260,7 @@ export default {
     this.loading = false
 
     // Проблема при быстром изменение графика, пока отключил анимацию
-    Chart.defaults.global.animation.duration = 0
+    // Chart.defaults.global.animation.duration = 0
 
   },
   beforeUpdate() {

@@ -29,17 +29,26 @@ export default {
     randomInteger(min, max) {
       return Math.round(min - 0.5 + Math.random() * (max - min + 1));
     },
+    stringToHex(string) {
+      let hash = 0
+      for (let i = 0; i < string.length; i++) {
+        hash = string.charCodeAt(i) + ((hash << 5) - hash)
+      }
+      let color = '#'
+      for (let i = 0; i < 3; i++) {
+        const value = (hash >> (i * 8)) & 0xff
+        color += ('00' + value.toString(16)).substr(-2)
+      }
+      return color
+    },
   },
   mounted() {
     let borderColor = []
     let backgroundColor = []
+    const blackColor = '#000'
     for (let category of this.categories) {
-      borderColor.push('#000')
-      let r = this.randomInteger(0, 255)
-      let g = this.randomInteger(0, 255)
-      let b = this.randomInteger(0, 255)
-      let a = '0.' + this.randomInteger(2, 5)
-      backgroundColor.push(`rgba(${r},${g},${b},${a})`)
+      borderColor.push(blackColor)
+      backgroundColor.push(this.stringToHex(category.title))
     }
 
     this.renderChart({
