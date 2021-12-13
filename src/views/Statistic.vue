@@ -66,11 +66,12 @@ export default {
     this.records = await this.$store.dispatch('fetchRecords')
     this.categories = await this.$store.dispatch('fetchCategories')
     this.loading = false
-    this.records = this.records.map(record => {
+    console.log(this.records)
+    const records = this.records.map(record => {
       return {
         ...record,
-        categoryTitle: this.categories.find(c => c.id === record.categoryId).title,
-        icon: this.categories.find(c => c.id === record.categoryId).icon
+        categoryTitle: this.categories.find(c => c.id === record.categoryId.trim()).title,
+        icon: this.categories.find(c => c.id === record.categoryId.trim()).icon
       }
     }).sort(function (a, b) {
       if (a.date > b.date) {
@@ -82,7 +83,8 @@ export default {
       return 0
     })
 
-    this.setupPagination(this.records)
+
+    this.setupPagination(records)
   },
   methods: {
     async deleteRecord(e) {
